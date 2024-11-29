@@ -1,63 +1,62 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
-
-
+import DragPage from "./DragPage";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import { Button } from "@mui/material";
+import DragAPIcode from "./DragAPIcode";
 function Content() {
-  const [data, setData] = useState({email : '', phone: '',profession: '',userName : '' });
+  const [data, setData] = useState({
+    email: "",
+    phone: "",
+    profession: "",
+    userName: "",
+  });
+
+  const [showAddtask, setShowAddtask] = useState(false)
+  const handleCloseAddtask=()=>{
+    setShowAddtask(false)
+  }
+
+  const handleShowAddtask=()=>{
+    setShowAddtask(true)
+  }
   const Token = localStorage.getItem("token");
 
-  
   useEffect(() => {
-
-  
-
     axios
 
-      .get("http://localhost:3003/content",{headers :{
-Token
-      } } )
-      .then(response =>{
+      .get("http://localhost:3003/content", {
+        headers: {
+          Token,
+        },
+      })
+      .then((response) => {
         // setData(...data, setData({userName : response.data.message.userName ,email : response.data.message.email,phone:response.data.message.phone, profession : response.data.message.profession }))
-        
-    setData({ ...data, email:response.data.message.email,phone : response.data.message.phone,profession : response.data.message.profession,userName : response.data.message.userName })
 
-    console.log(response.data.message.userName);
-      
+        setData({
+          ...data,
+          email: response.data.message.email,
+          phone: response.data.message.phone,
+          profession: response.data.message.profession,
+          userName: response.data.message.userName,
+        });
+
+        console.log(response.data.message.userName);
+
         // setData({email : response.data.message.email })
-      
-      } ).catch(err => console.log(err))
-     
-    
-  },[]);
-
-
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
-    // <div className="container-fluid" style={{display:'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr', height:"1vh",width:"100%",marginTop:"2rem"}}>
-      
-     
-    //     {data.map((data, key) => {
-    //     return (
-          
-    //   <div className="m-1 p-1 shadow bg-white rounded card">
-    //     <img src={data.image} className="card-img-top" alt="products"  style={{height:"12rem"}} />
-    //     <div className="card-body">
-    //       <h6 className="card-title " style={{maxHeight:"10rem", marginBottom:"2px"}} >{data.title} </h6>
-    //       <p className="p-1 m-1"  style={{fontWeight:"bold"}}>{data.category}</p>
-    //       <p className="card-text " style={{height:"8rem",overflow:"auto"}}>
-    //       {data.description}
-    //       </p>
-    //       <h5 className="p-1 m-1" >${data.price} <button type="button" class="btn btn-warning">Add to Cart</button></h5>
-        
-    //      </div>
-    //     </div>
-      
-    //     )})}
-    // </div>
-    <div className="container shadow-lg p-3 mb-5 bg-body rounded" style={{maxwidth:"60%", marginTop:"5%"}}>
-      <form method="GET">
+    <div
+      className="container shadow-lg p-3 mb-5 bg-body rounded"
+      style={{ maxwidth: "60%", marginTop: "5%" }}
+    >
+      {/* <form method="GET">
         <div className="row">
           <div className="col-md-4">
           <img  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" width="200px" alt="userprofile"/>
@@ -116,8 +115,34 @@ Token
        </div>
 
        </div>
-      </form>
-     
+      </form> */}
+      <button type="button" className="btn btn-primary" style={{marginBottom:"10px"}} onClick={handleShowAddtask} >
+        {/* <NavLink style={{ color: "white", textDecoration: "none" }} to="./"> */}
+          Add Task
+        {/* </NavLink> */}
+      </button>
+      <Dialog
+        open={showAddtask}
+        onClose={handleCloseAddtask}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth
+      >
+        <div style={{padding:"20px 20px"}}>
+        <DialogTitle id="alert-dialog-title">
+          Fill the task details
+        </DialogTitle>
+        <div style={{padding:"10px" ,display:"flex", flexDirection:"column",gap:"20px"}}>
+        <TextField id="outlined-basic" label="Title" variant="outlined" />
+        <TextField id="outlined-basic" label="Description" variant="outlined" />
+        </div>
+        </div>
+        <Button variant="contained" style={{margin:"30px",textTransform:"none"}}>Add Task</Button>
+      </Dialog>
+      <div>
+        {/* <DragPage/> */}
+        <DragAPIcode/>
+      </div>
     </div>
   );
 }

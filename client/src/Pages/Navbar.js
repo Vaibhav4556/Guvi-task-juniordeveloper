@@ -54,7 +54,7 @@ function Navbar() {
           </NavLink>{" "}
         </button>}
         
-
+        {!Token ?
         <button type="button" className="btn btn-primary">
           <NavLink
             style={{ color: "white", textDecoration: "none" }}
@@ -63,7 +63,7 @@ function Navbar() {
           
             Registration{" "}
           </NavLink>
-        </button>
+        </button>:null}
         <button type="button" className="btn btn-primary" >
           <NavLink style={{ color: "white", textDecoration: "none" }} to="./content">
             
